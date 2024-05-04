@@ -1,0 +1,42 @@
+version: '3.7'
+services:
+  snipe:
+    image: snipe/snipe-it:latest
+    ports:
+      - "8000:80"
+    environment:
+      DB_HOST: snipedb
+      DB_DATABASE: snipeit
+      DB_USERNAME: snipeit
+      DB_PASSWORD: SUPER_SECRET_PASSWORD
+      MAIL_PORT_587_TCP_ADDR: smtp.whatever.com
+      MAIL_PORT_587_TCP_PORT: 587
+      MAIL_ENV_FROM_ADDR: youremail@yourdomain.com
+      MAIL_ENV_FROM_NAME: "Your Full Email Name"
+      MAIL_ENV_ENCRYPTION: tcp
+      MAIL_ENV_USERNAME: your_email_username
+      MAIL_ENV_PASSWORD: your_email_password
+      APP_ENV: production
+      APP_DEBUG: false
+      APP_KEY: base64:LONG_STRING
+      APP_URL: http://127.0.0.1:8000
+      APP_TIMEZONE: US/Eastern
+      APP_LOCALE: en
+      PHP_UPLOAD_LIMIT: 100
+    volumes:
+      - './data:/var/lib/snipeit'
+    depends_on:
+      - snipedb
+
+  snipedb:
+    image: mysql:5.6
+    environment:
+      MYSQL_ROOT_PASSWORD: ULTRA_SECRET_PASSWORD
+      MYSQL_DATABASE: snipeit
+      MYSQL_USER: snipeit
+      MYSQL_PASSWORD: SUPER_SECRET_PASSWORD
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data: 
